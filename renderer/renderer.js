@@ -19,7 +19,7 @@ selectBtn.addEventListener('click', async () => {
   if (file) {
     selectedFile = file;
     filenameDisplay.textContent = file.split('/').pop();
-    log(`Datei gewählt: ${file}`);
+    log(`File chosen: ${file}`);
   }
 });
 
@@ -46,13 +46,13 @@ stopBtn.addEventListener('click', () => {
 
   //set playing variable to false and log
   isPlaying = false;
-  log(`⛔️ Wiedergabe gestoppt`);
+  log(`⛔️ Stopped Parrrot`);
 });
 
 //react to change of sound device
 deviceSelect.addEventListener('change', () => {
   selectedDeviceId = deviceSelect.value;
-  log(`🎚️ Gerät gewählt: ${selectedDeviceId}`);
+  log(`🎚️ Device chosen: ${selectedDeviceId}`);
 });
 
 //define parrot loop
@@ -60,23 +60,23 @@ async function runTXLoop(file) {
   
   //set playing variable to true and log that
   isPlaying = true;
-  log(`▶️ Starte TX-Wiedergabeschleife`);
+  log(`▶️ Started Parrrot`);
 
   //repeat this while playing is true
   while (isPlaying) {
     try {
       await window.flrigAPI.enableTX();
-      log(`🎙️ TX aktiviert`);
+      log(`🎙️ activated TX`);
 
       await playAudio(file);
 
       await window.flrigAPI.disableTX();
-      log(`📻 RX aktiviert`);
+      log(`📻 return to RX`);
 
       await updateModeDisplay();
       await delay(2000);
     } catch (err) {
-      log(`❌ Fehler: ${err.message}`);
+      log(`❌ Error: ${err.message}`);
       isPlaying = false;
     }
   }
@@ -107,14 +107,14 @@ function playAudio(file) {
           .then(() => {
             
             //play audio
-            log(`🔈 Ausgabe → ${selectedDeviceId}`);
+            log(`🔈 Output → ${selectedDeviceId}`);
             audio.play();
 
           })
           .catch(err => {
             
             //log error, play audio anyway
-            log(`⚠️ Ausgabe konnte nicht umgeschaltet werden: ${err.message}`);
+            log(`⚠️ Output could not be switched: ${err.message}`);
             audio.play();
 
           });
@@ -127,13 +127,13 @@ function playAudio(file) {
 
       //log end
       audio.onended = () => {
-        log(`✅ Wiedergabe abgeschlossen`);
+        log(`✅ Playback done`);
         resolve();
       };
 
       //log error
       audio.onerror = () => {
-        reject(new Error('Fehler beim Abspielen der Datei'));
+        reject(new Error('Error while playing file.'));
       };
     } catch (err) {
       reject(err);
@@ -156,8 +156,8 @@ async function updateModeDisplay() {
     const mode = await window.flrigAPI.getMode();
     modeDisplay.textContent = mode;
   } catch (err) {
-    modeDisplay.textContent = 'Fehler';
-    log(`❌ FLRIG-Modus konnte nicht abgefragt werden`);
+    modeDisplay.textContent = 'No mode from FLRig available';
+    log(`❌ Could not get FLRIG-Mode`);
   }
 }
 
@@ -176,7 +176,7 @@ async function loadAudioDevices() {
     outputs.forEach(device => {
       const option = document.createElement('option');
       option.value = device.deviceId;
-      option.textContent = device.label || `Audioausgang ${device.deviceId}`;
+      option.textContent = device.label || `Output device ${device.deviceId}`;
       deviceSelect.appendChild(option);
     });
 
@@ -184,10 +184,10 @@ async function loadAudioDevices() {
     selectedDeviceId = outputs[0]?.deviceId || null;
     
     //log success
-    log(`🔊 Audio-Geräte geladen (${outputs.length})`);
+    log(`🔊 Output devices loaded (${outputs.length})`);
   } catch (err) {
     //log error
-    log(`❌ Audio-Geräte konnten nicht geladen werden: ${err.message}`);
+    log(`❌ Output devices could not be loaded: ${err.message}`);
   }
 }
 

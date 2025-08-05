@@ -2,22 +2,22 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>FLRIG Audio TX</title>
+  <title>Parrrot</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
     <h1>🎙️ Parrrot</h1>
 
-    <label for="devices">🔊 Audio-Ausgabe:</label>
+    <label for="devices">🔊 Audio-Devices:</label>
     <select id="devices"></select>
 
-    <label for="volume">🔉 Lautstärke:</label>
-    <input type="range" id="volume" min="0" max="1" step="0.01" value="0.8">
+    <label for="volume">🔉 Volume:</label>
+    <input type="range" id="volume" min="0" max="1" step="0.01" value="0.95">
 
-    <label for="select-file">🎵 Datei wählen:</label>
-    <button id="select-file">Datei wählen</button>
-    <p id="filename" class="filename">Keine Datei gewählt</p>
+    <label for="select-file">🎵 Choose Audio File:</label>
+    <button id="select-file">Choose Audio File</button>
+    <p id="filename" class="filename">No File Selected</p>
 
     <div class="controls">
       <button id="play" class="primary">▶️ Play</button>
