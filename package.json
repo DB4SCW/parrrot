@@ -1,7 +1,7 @@
 {
-  "name": "flrig-audio-tx",
+  "name": "Parrrot",
   "version": "1.0.0",
-  "description": "Electron-App zur Steuerung von FLRIG mit Audioausgabe",
+  "description": "A cross-plattform software way to use a parrot on amateur radio rigs that do not have one built in",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
