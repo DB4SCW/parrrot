@@ -11,7 +11,7 @@ const flrig = require('./flrig/flrigControl');
 function createWindow() {
   const win = new BrowserWindow({
     width: 600,
-    height: 800,
+    height: 830,
     icon: path.join(__dirname, 'assets', 'parrrot_icon_512.png'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
