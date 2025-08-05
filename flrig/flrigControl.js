@@ -45,6 +45,7 @@ async function callFLRig(method, params = []) {
 function convertToDigitalMode(mode) {
   if (mode === 'USB') return 'USB-D';
   if (mode === 'LSB') return 'LSB-D';
+  if (mode === 'FM') return 'FM-D';
   return mode;
 }
 
