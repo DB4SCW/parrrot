@@ -3,6 +3,7 @@ const axios = require('axios');
 const FLRIG_URL = 'http://localhost:12345/';
 let originalMode = null;
 
+//XML-Builder for FLRig API
 function buildXML(method, params = []) {
   const paramXML = params.map(p => {
     let valueTag = '';
@@ -23,6 +24,7 @@ function buildXML(method, params = []) {
 </methodCall>`;
 }
 
+//call FLRig and catch return
 async function callFLRig(method, params = []) {
   const xml = buildXML(method, params);
   try {
@@ -42,6 +44,7 @@ async function callFLRig(method, params = []) {
   }
 }
 
+//map mode to digi-input mode
 function convertToDigitalMode(mode) {
   if (mode === 'USB') return 'USB-D';
   if (mode === 'LSB') return 'LSB-D';
@@ -50,45 +53,60 @@ function convertToDigitalMode(mode) {
 }
 
 async function enableTX() {
+  
+  //get mode
   originalMode = await getMode();
+  
+  //convert to new digi in put mode
   const newMode = convertToDigitalMode(originalMode);
+  
+  //set new mode if different
   if (newMode !== originalMode) {
     await setMode(newMode);
   }
 
-  // Sende PTT true, aber warte nicht auf die Antwort
+  //trigger PTT, do not wait for FLRig answer
   setPTT(true).catch(err => {
     console.error("FLRIG TX set failed:", err.message);
   });
 
-  // Gib FLRIG etwas Zeit zum Schalten
+  //delay before other things are allowed to happen
   await delay(100);
 }
 
+//disable TX function
 async function disableTX() {
+  
+  //disable TX, this time wait for the answer
   await setPTT(false);
+
+  //return mode to original mode if that was different
   if (originalMode && (await getMode()) !== originalMode) {
     await setMode(originalMode);
   }
 }
 
+//set PTT state function
 async function setPTT(state) {
   return await callFLRig('rig.set_ptt', [state ? 1 : 0]);
 }
 
+//get mode function
 async function getMode() {
   return await callFLRig('rig.get_mode');
 }
 
+//set mode function
 async function setMode(mode) {
   return await callFLRig('rig.set_mode', [mode]);
 }
 
+//set delay
 function delay(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-
+//expose things to the outside
 module.exports = {
   enableTX,
   disableTX,
