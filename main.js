@@ -26,6 +26,11 @@ function createWindow() {
   //load dev tools when needed
   //win.webContents.openDevTools();
 }
+
+//Close handler
+ipcMain.on('exit-app', () => {
+  app.quit();
+});
  
 //define handlers
 

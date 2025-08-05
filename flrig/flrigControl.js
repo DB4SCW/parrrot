@@ -31,7 +31,7 @@ async function callFLRig(method, params = []) {
     });
 
     const data = res.data;
-    const matchString = data.match(/<string>(.*?)<\/string>/);
+    const matchString = data.match(/<value>(.*?)<\/value>/);
     const matchInt = data.match(/<int>(\d)<\/int>/);
     if (matchString) return matchString[1];
     if (matchInt) return parseInt(matchInt[1], 10);
@@ -55,7 +55,14 @@ async function enableTX() {
   if (newMode !== originalMode) {
     await setMode(newMode);
   }
-  await setPTT(true);
+
+  // Sende PTT true, aber warte nicht auf die Antwort
+  setPTT(true).catch(err => {
+    console.error("FLRIG TX set failed:", err.message);
+  });
+
+  // Gib FLRIG etwas Zeit zum Schalten
+  await delay(100);
 }
 
 async function disableTX() {
@@ -76,6 +83,11 @@ async function getMode() {
 async function setMode(mode) {
   return await callFLRig('rig.set_mode', [mode]);
 }
+
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 
 module.exports = {
   enableTX,

@@ -2,6 +2,7 @@
 let selectedFile = null;
 let isPlaying = false;
 let selectedDeviceId = null;
+let audioPlayer = null;
 
 //references to different UI elements
 const selectBtn = document.getElementById('select-file');
@@ -12,6 +13,7 @@ const volumeSlider = document.getElementById('volume');
 const logOutput = document.getElementById('log');
 const modeDisplay = document.getElementById('mode-display');
 const deviceSelect = document.getElementById('devices');
+const delayInput = document.getElementById('tx-delay');
 
 //define file picker behaviour
 selectBtn.addEventListener('click', async () => {
@@ -24,10 +26,20 @@ selectBtn.addEventListener('click', async () => {
 });
 
 //define play button
-playBtn.addEventListener('click', () => {
+playBtn.addEventListener('click', async () => {
   
   //if there is no selected file or file is already playing, do nothing
   if (!selectedFile || isPlaying) {
+    return;
+  }
+
+  //allwed modes for parrot to be in
+  const allowed_modes = ['USB', 'LSB', 'FM', 'USB-D', 'LSB-D', 'FM-D'];
+
+  const mode = await window.flrigAPI.getMode();
+  if(!allowed_modes.includes(mode))
+  {
+    log("Mode " + mode + " is not a voice mode supported by parrrot.");
     return;
   }
 
@@ -36,17 +48,28 @@ playBtn.addEventListener('click', () => {
 });
 
 //define stop button
-stopBtn.addEventListener('click', () => {
-  
-  //do nothing if nothing is playing right now
-  if(!isPlaying)
-  {
-    return;
+stopBtn.addEventListener('click', async () => {
+
+  //stop audio immediately
+  if (audioPlayer) {
+    audioPlayer.pause();
+    audioPlayer.currentTime = 0;
+    audioPlayer = null;
   }
 
-  //set playing variable to false and log
+  //set playing variable to false
   isPlaying = false;
-  log(`⛔️ Stopped Parrrot`);
+
+  //switch back to RX immediately
+  try {
+    await window.flrigAPI.disableTX();
+    log("📻 Switching back to RX");
+  } catch (err) {
+    log("❌ Error while switching to RX: " + err.message);
+  }
+
+  //log success
+  log(`⛔️ Playback stopped`);
 });
 
 //react to change of sound device
@@ -65,16 +88,28 @@ async function runTXLoop(file) {
   //repeat this while playing is true
   while (isPlaying) {
     try {
+      
+      //set minimum of one second delay
+      const delaySeconds = Math.max(1, parseFloat(delayInput.value) || 1);
+      delayInput.value = delaySeconds;
+
+      //set proper mode and set TX to on
       await window.flrigAPI.enableTX();
       log(`🎙️ activated TX`);
 
+      //play audio to the device
       await playAudio(file);
 
+      //disable TX and restore previous mode
       await window.flrigAPI.disableTX();
       log(`📻 return to RX`);
 
+      //update mode display just in case
       await updateModeDisplay();
-      await delay(2000);
+
+      //wait between TX cycles
+      await delay(delaySeconds * 1000);
+
     } catch (err) {
       log(`❌ Error: ${err.message}`);
       isPlaying = false;
@@ -94,8 +129,9 @@ function playAudio(file) {
     try {
       
       //create audio
-      const audio = new Audio(file);
-      
+      audioPlayer = new Audio(file);
+      const audio = audioPlayer;
+
       //read volume slider
       audio.volume = volumeSlider.value;
 
@@ -152,12 +188,21 @@ function log(msg) {
 
 //define updating of flrig mode
 async function updateModeDisplay() {
+  let error = false;
+  let mode = null; 
+
   try {
-    const mode = await window.flrigAPI.getMode();
+    mode = await window.flrigAPI.getMode();
     modeDisplay.textContent = mode;
   } catch (err) {
     modeDisplay.textContent = 'No mode from FLRig available';
+    error = true;
     log(`❌ Could not get FLRIG-Mode`);
+  }
+
+  if (!mode || error) {
+    alert("FLRig does not answer or invalid mode received.\nPlease check FLRig.\nClosing app now.");
+    window.electronAPI.exitApp();
   }
 }
 

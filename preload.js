@@ -3,7 +3,8 @@ const { contextBridge, ipcRenderer } = require('electron');
 
 //explose file handling
 contextBridge.exposeInMainWorld('electronAPI', {
-  selectFile: () => ipcRenderer.invoke('select-file')
+  selectFile: () => ipcRenderer.invoke('select-file'),
+    exitApp: () => ipcRenderer.send('exit-app')
 });
 
 //expose flrig handling
