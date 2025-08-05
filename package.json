@@ -4,12 +4,38 @@
   "description": "A cross-plattform software way to use a parrot on amateur radio rigs that do not have one built in",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "dist": "electron-builder"
+  },
+  "build": {
+    "appId": "de.db4scw.parrrot.app",
+    "productName": "Parrrot",
+    "directories": {
+      "buildResources": "assets"
+    },
+    "files": [
+      "**/*"
+    ],
+    "mac": {
+      "target": ["dmg"],
+      "icon": "parrrot_icon.icns"
+    },
+    "win": {
+      "target": ["nsis"],
+      "icon": "parrrot_icon.ico"
+    },
+    "linux": {
+      "target": ["deb"],
+      "icon": "parrrot_icon_512.png",
+      "maintainer": "Stefan",
+      "category": "Utility"
+    }
   },
   "devDependencies": {
-    "electron": "^30.0.0"
+    "electron": "^30.0.0",
+    "electron-builder": "^24.6.0"
   },
   "dependencies": {
-    "axios": "^1.6.0"
+    "axios": "^1.6.8"
   }
 }
