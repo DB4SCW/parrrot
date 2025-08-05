@@ -1,22 +1,25 @@
-name: Build Parrrot App
+name: 🔨 Build Parrrot App
 
 on:
   push:
-    branches: [master]
+    branches:
+      - master
 
 jobs:
   build:
+    name: Build for ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [macos-latest, ubuntu-latest, windows-latest]
 
     steps:
-      - name: 📥 Checkout code
+      - name: 📥 Checkout repo
         uses: actions/checkout@v3
 
-      - name: 🧰 Setup Node.js
-        uses: actions/setup-node@v4
+      - name: 📦 Setup Node
+        uses: actions/setup-node@v3
         with:
           node-version: 20
 
@@ -24,13 +27,18 @@ jobs:
         run: npm install
 
       - name: 🛠️ Build Electron app
-        run: npm run dist
+        run: |
+          if [ "${{ matrix.os }}" = "macos-latest" ]; then
+            npm run dist:mac-universal
+          else
+            npm run dist
+          fi
+        shell: bash
         env:
           CI: false
 
-
-      - name: 📤 Upload build artifacts
-        uses: actions/upload-artifact@v4
+      - name: 📤 Upload dist artifacts
+        uses: actions/upload-artifact@v3
         with:
           name: parrrot-${{ matrix.os }}
           path: dist/
