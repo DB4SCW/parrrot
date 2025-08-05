@@ -9,12 +9,13 @@ body {
 }
 
 .container {
+  position: relative;
   max-width: 500px;
   width: 100%;
   padding: 2rem;
   margin-top: 2rem;
   background-color: #1e1e1e;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.5);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
   border-radius: 12px;
 }
 
@@ -51,18 +52,18 @@ input[type="range"] {
 
 .logo {
   position: absolute;
-  top: 40px;
-  left: 30px;
+  top: 16px;
+  left: 16px;
   width: 48px;
   height: auto;
   opacity: 0.6;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease, transform 0.3s ease;
   z-index: 10;
 }
 
 .logo:hover {
   opacity: 1.0;
-  animation: flap 0.8s ease-in-out;
+  transform: rotate(4deg) scale(1.05);
 }
 
 button {
