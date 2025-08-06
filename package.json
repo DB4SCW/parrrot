@@ -6,7 +6,8 @@
   "scripts": {
     "start": "electron .",
     "dist": "electron-builder",
-    "dist:mac-universal": "electron-builder --mac --universal"
+    "dist:mac-universal": "electron-builder --mac --universal",
+    "dist:all": "electron-builder --mac --arm64 --universal --linux deb rpm tar.gz --arm64"
   },
   "build": {
     "appId": "de.db4scw.parrrot.app",
