@@ -4,6 +4,8 @@
 
 Parrrot is a cross-plattform software (using Electron) enabling you to use a voice parrot on amateur radio rigs that do not have one built in by feeding voice and CAT from your personal computer.
 
+Parrrot needs a running instance of FLRig to handle mode switching and PTT. Start FLRig before starting Parrrot.
+
 Read about how this project came to be on my [Blog](https://www.db4scw.de/introducing-parrrot/).
 
 73, de Stefan, DB4SCW
