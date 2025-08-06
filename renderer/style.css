@@ -31,6 +31,24 @@ label {
   display: block;
 }
 
+.tx-badge {
+  display: inline-block;
+  margin-left: 0.75rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-weight: bold;
+  font-size: 0.8rem;
+  color: white;
+  background-color: #28a745; /* RX = green */
+  vertical-align: middle;
+  transition: background-color 0.3s ease;
+}
+
+.tx-badge.tx {
+  background-color: #dc3545; /* TX = red */
+}
+
+
 select,
 input[type="range"],
 input[type="number"],

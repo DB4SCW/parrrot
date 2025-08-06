@@ -14,6 +14,7 @@ const logOutput = document.getElementById('log');
 const modeDisplay = document.getElementById('mode-display');
 const deviceSelect = document.getElementById('devices');
 const delayInput = document.getElementById('tx-delay');
+const txBadge = document.getElementById('tx-badge');
 
 //define file picker behaviour
 selectBtn.addEventListener('click', async () => {
@@ -63,6 +64,8 @@ stopBtn.addEventListener('click', async () => {
   //switch back to RX immediately
   try {
     await window.flrigAPI.disableTX();
+    txBadge.textContent = 'RX';
+    txBadge.classList.remove('tx');
     log("📻 Switching back to RX");
   } catch (err) {
     log("❌ Error while switching to RX: " + err.message);
@@ -95,6 +98,8 @@ async function runTXLoop(file) {
 
       //set proper mode and set TX to on
       await window.flrigAPI.enableTX();
+      txBadge.textContent = 'TX';
+      txBadge.classList.add('tx');
       log(`🎙️ activated TX`);
 
       //play audio to the device
@@ -102,6 +107,8 @@ async function runTXLoop(file) {
 
       //disable TX and restore previous mode
       await window.flrigAPI.disableTX();
+      txBadge.textContent = 'RX';
+      txBadge.classList.remove('tx');
       log(`📻 return to RX`);
 
       //update mode display just in case
