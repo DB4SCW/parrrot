@@ -45,6 +45,10 @@
         {
           "target": "tar.gz",
           "arch": ["x64", "armv7l", "arm64"]
+        },
+        {
+          "target": "AppImage",
+          "arch": ["x64"]
         }
       ],
       "icon": "assets/parrrot_icon_512.png",
