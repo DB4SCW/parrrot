@@ -17,6 +17,12 @@
     "files": [
       "**/*"
     ],
+    "extraFiles": [
+      {
+        "from": "assets/start.sh",
+        "to": "start.sh"
+      }
+    ],
     "mac": {
       "target": ["dmg"],
       "icon": "parrrot_icon.icns"
@@ -35,6 +41,10 @@
         {
           "target": "rpm",
           "arch": ["x64"]
+        },
+        {
+          "target": "tar.gz",
+          "arch": ["x64", "armv7l", "arm64"]
         }
       ],
       "icon": "assets/parrrot_icon_512.png",
