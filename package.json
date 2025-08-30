@@ -1,6 +1,6 @@
 {
   "name": "Parrrot",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A cross-platform software way to use a parrot on amateur radio rigs that do not have one built in",
   "main": "main.js",
   "scripts": {
