@@ -9,7 +9,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
 
 //expose flrig handling
 contextBridge.exposeInMainWorld('flrigAPI', {
-  enableTX: () => ipcRenderer.invoke('flrig:enableTX'),
+  enableTX: (targetMode) => ipcRenderer.invoke('flrig:enableTX', targetMode),
   disableTX: () => ipcRenderer.invoke('flrig:disableTX'),
   getMode: () => ipcRenderer.invoke('flrig:getMode')
 });

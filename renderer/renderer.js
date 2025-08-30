@@ -15,6 +15,7 @@ const modeDisplay = document.getElementById('mode-display');
 const deviceSelect = document.getElementById('devices');
 const delayInput = document.getElementById('tx-delay');
 const txBadge = document.getElementById('tx-badge');
+const targetMode = document.getElementById('target-mode');
 
 //define file picker behaviour
 selectBtn.addEventListener('click', async () => {
@@ -97,7 +98,7 @@ async function runTXLoop(file) {
       delayInput.value = delaySeconds;
 
       //set proper mode and set TX to on
-      await window.flrigAPI.enableTX();
+      await window.flrigAPI.enableTX(targetMode.value);
       txBadge.textContent = 'TX';
       txBadge.classList.add('tx');
       log(`🎙️ activated TX`);

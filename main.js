@@ -23,8 +23,6 @@ function createWindow() {
   //load UI
   win.loadFile('renderer/index.html');
   
-  //load dev tools when needed
-  //win.webContents.openDevTools();
 }
 
 //Close handler
@@ -44,7 +42,7 @@ ipcMain.handle('select-file', async () => {
 });
 
 //define flrig behaviour
-ipcMain.handle('flrig:enableTX', () => flrig.enableTX());
+ipcMain.handle('flrig:enableTX', (_evt, targetMode) => flrig.enableTX(targetMode));
 ipcMain.handle('flrig:disableTX', () => flrig.disableTX());
 ipcMain.handle('flrig:getMode', () => flrig.getMode());
 

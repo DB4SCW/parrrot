@@ -45,20 +45,43 @@ async function callFLRig(method, params = []) {
 }
 
 //map mode to digi-input mode
-function convertToDigitalMode(mode) {
-  if (mode === 'USB') return 'USB-D';
-  if (mode === 'LSB') return 'LSB-D';
-  if (mode === 'FM') return 'FM-D';
+function convertToDigitalMode(mode, targetMode) {
+  
+  //convert mode to required target mode for LSB/USB-D
+  if(targetMode === 'LSB/USB-D'){
+    if (mode === 'USB') return 'USB-D';
+    if (mode === 'LSB') return 'LSB-D';
+    if (mode === 'FM') return 'FM-D';
+    return mode;
+  }
+
+  //deal with targetmode DIG
+  if(targetMode === 'DIG'){
+    return 'DIG';
+  }
+  
+  //deal with targetmode DATA
+  if(targetMode === 'DATA'){
+    return 'DATA';
+  }
+
+  //deal with targetmode PKT
+  if(targetMode === 'PKT'){
+    return 'PKT';
+  }
+
+  //if nothing works, just stay here
   return mode;
+
 }
 
-async function enableTX() {
+async function enableTX(targetMode) {
   
   //get mode
   originalMode = await getMode();
   
   //convert to new digi in put mode
-  const newMode = convertToDigitalMode(originalMode);
+  const newMode = convertToDigitalMode(originalMode,targetMode);
   
   //set new mode if different
   if (newMode !== originalMode) {
