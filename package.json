@@ -33,8 +33,7 @@
     ],
     "mac": {
       "target": [
-        { "target": "dmg", "arch": ["x64", "arm64", "universal"] },
-        { "target": "pkg", "arch": ["x64", "arm64", "universal"] }
+        { "target": "dmg", "arch": ["x64", "arm64", "universal"] }
       ],
       "icon": "parrrot_icon.icns"
     },
