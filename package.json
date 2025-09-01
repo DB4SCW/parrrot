@@ -3,6 +3,7 @@
   "version": "1.0.1",
   "description": "A cross-platform software way to use a parrot on amateur radio rigs that do not have one built in",
   "main": "main.js",
+  "author": "Stefan DB4SCW dev@db4scw.de",
   "scripts": {
     "start": "electron .",
     "dist": "electron-builder",
@@ -35,8 +36,10 @@
       "icon": "parrrot_icon.icns"
     },
     "win": {
-      "target": ["nsis",
-                  "msi"],
+      "target": [
+        { "target": "nsis", "arch": ["x64", "arm64"] },
+        { "target": "msi",  "arch": ["x64", "arm64"] }
+      ],
       "icon": "parrrot_icon.ico"
     },
     "linux": {
