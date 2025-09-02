@@ -104,8 +104,8 @@ ipcMain.handle('app:checkLatestRelease', async (_evt, currentVersion) => {
   //get the tag from the json
   const tag = latest.tag_name || latest.name || '';
   
-  //remove a leading "v" if present
-  const latestVersion = tag.replace(/^v/i, '');
+  //remove a leading "v" if present including optional dot
+  const latestVersion = tag.replace(/^v\.?/i, '');
 
   //check if version is newer
   const isNewer = semver.valid(latestVersion) && semver.valid(currentVersion)
