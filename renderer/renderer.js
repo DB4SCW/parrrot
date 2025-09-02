@@ -208,6 +208,7 @@ async function updateModeDisplay() {
     log(`❌ Could not get FLRIG-Mode`);
   }
 
+  //close the app if something fails
   if (!mode || error) {
     alert("FLRig does not answer or invalid mode received.\nPlease check FLRig.\nClosing app now.");
     window.electronAPI.exitApp();
@@ -244,11 +245,38 @@ async function loadAudioDevices() {
   }
 }
 
-//initialize renderer
-init();
-
 //define init behaviour
 async function init() {
   await updateModeDisplay();
   await loadAudioDevices();
 }
+
+//run version check
+(async () => 
+  {
+    try {
+      const current = await window.versioncheck.getVersion();
+      const res = await window.versioncheck.checkLatestRelease(current);
+      if (res.isNewer && res.htmlUrl) {
+        showToast(
+          `New release ${res.latestVersion} available — <a href="${res.htmlUrl}" target="_blank" style="color:#fff; text-decoration:underline;">Open on GitHub</a>`
+        );
+      }
+    } catch (e) {
+      //fail silently
+    }
+  })();
+
+
+//show toast for update notification function
+function showToast(html, timeoutMs = 10000) {
+  const el = document.getElementById('toast');
+  el.innerHTML = html + ' &nbsp; <button id="toastClose" style="margin-left:8px;border:0;border-radius:8px;padding:4px 8px;cursor:pointer;">Dismiss</button>';
+  el.style.display = 'block';
+  const close = () => { el.style.display = 'none'; };
+  document.getElementById('toastClose').onclick = close;
+  setTimeout(close, timeoutMs);
+}
+
+//initialize renderer
+init();

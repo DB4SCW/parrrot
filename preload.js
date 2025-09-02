@@ -13,3 +13,10 @@ contextBridge.exposeInMainWorld('flrigAPI', {
   disableTX: () => ipcRenderer.invoke('flrig:disableTX'),
   getMode: () => ipcRenderer.invoke('flrig:getMode')
 });
+
+//expose version check handling
+contextBridge.exposeInMainWorld('versioncheck', {
+  getVersion: () => ipcRenderer.invoke('app:getVersion'),
+  checkLatestRelease: (currentVersion) =>
+    ipcRenderer.invoke('app:checkLatestRelease', currentVersion),
+});
