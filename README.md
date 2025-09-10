@@ -12,7 +12,7 @@ Read about how this project came to be on my [Blog](https://www.db4scw.de/introd
 
 ## Security Vulnerabilities
 
-If you discover a security vulnerability within Laravel itself, please contact the Electron Maintainers directly.
+If you discover a security vulnerability within Electron itself, please contact the Electron Maintainers directly.
 
 If you discover a security vulnerability within Parrrot, please send an e-mail to DB4SCW, Stefan Wolf via [dev@db4scw.de](mailto:dev@db4scw.de). 
 
